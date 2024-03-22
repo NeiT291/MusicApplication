@@ -27,9 +27,10 @@ namespace MusicApplication
     public partial class MainWindow : Window
     {
         public List<Song> allSong = new List<Song>();
-        public List<string> pathLibrary = new List<string>();
+        public List<Song> playlist = new List<Song>();
+        public List<string> pathLibrarys = new List<string>();
         public WindowsMediaPlayer mediaPlayer = new WindowsMediaPlayer();
-        System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+        //System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         
         int i = 0;
         public MainWindow()
@@ -51,82 +52,34 @@ namespace MusicApplication
         private void listLibrary_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             nameLibrarySelected.Text = listLibrary.SelectedValue.ToString();
-
-            List<Song> songs = new List<Song>();
-            
-            var files = Directory.GetFiles(pathLibrary[listLibrary.SelectedIndex], "*.mp3");
-            for (int i = 0;i< files.Length;i++)
-            {
-                Song song = new Song();
-
-                song.Index = i + 1;
-
-                IWMPMedia media = mediaPlayer.newMedia(files[i]);
-
-                TagLib.File tagFile = TagLib.File.Create(files[i]);
-
-                var firstPicture = tagFile.Tag.Pictures.FirstOrDefault();
-
-                if (firstPicture != null)
-                {
-                    byte[] pData = firstPicture.Data.Data;
-                    var image = new BitmapImage();
-                    image.BeginInit();
-                    image.StreamSource = new MemoryStream(pData);
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.EndInit();
-                    image.Freeze();
-                    song.artwork = image;
-                }
-
-                song.nameSong = tagFile.Tag.Title;
-                if (tagFile.Tag.Title == null)
-                {
-                    song.nameSong = Path.GetFileNameWithoutExtension(files[i]);
-                }
-
-                song.author = tagFile.Tag.Performers.FirstOrDefault();
-                song.album = tagFile.Tag.Album;
-                song.path = files[i];
-                song.duration = media.duration;
-                song.durationString = media.durationString;
-                songs.Add(song);
-            }
-            
-            listSong.ItemsSource = songs;
+            listSong.ItemsSource = null;
+            listSong.Items.Clear();
+            listSong.ItemsSource = new loadSongs().loadFromPath(pathLibrarys[listLibrary.SelectedIndex]);
         }
 
         private void listSong_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(listSong.SelectedItem == null) 
+            {
+                return;
+            }
+            Song song = (Song)listSong.SelectedItem;
+            playlist.Add(song);
+            
+            mediaPlayer.currentPlaylist.appendItem(mediaPlayer.newMedia(song.path));
+
+            listPlayList.Items.Add(song);
         }
 
         private void playBTN_Click(object sender, RoutedEventArgs e)
         {
-            if (mediaPlayer.playState == WMPLib.WMPPlayState.wmppsUndefined)
-            {
-                return;
-            }
-            else if (mediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying)
-            {
-                Image playImage = (Image)((Button)sender).Content;
-                playImage.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/play.png"));
-                dispatcherTimer.Stop();
-                mediaPlayer.controls.pause();
-            }
-            else
-            {
-                Image playImage = (Image)((Button)sender).Content;
-                playImage.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/pause.png"));
-                mediaPlayer.controls.play();
-                dispatcherTimer.Start();
-            }
+            new play(this, sender);
         }
 
         private void loopBTN_Click(object sender, RoutedEventArgs e)
         {
 
-            Image loopImage = (Image)((Button)sender).Content;
-            loopImage.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/loopEnable.png"));
+            new loop(this, sender);
         }
         
 
@@ -137,21 +90,7 @@ namespace MusicApplication
 
         private void playSongBTN_Click(object sender, RoutedEventArgs e)
         {
-            Song song = (Song)((ListBoxItem)listSong.ContainerFromElement((Button)sender)).Content;
-
-            Image playImage = (Image)playBTN.Content;
-            playImage.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/pause.png"));
-            mediaPlayer.URL = song.path;
-            sliderSong.Maximum = song.duration;
-
-            isPlayingSongArtwork.Source = song.artwork;
-            if(song.artwork == null) {
-                isPlayingSongArtwork.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/music.png"));
-            }
-            isPlayingSongName.Content = song.nameSong;
-            isPlayingAuthor.Content = song.author;
-
-            mediaPlayer.settings.volume = 10;
+            new playNewSong(this,this.listSong, sender);
         }
 
         private void sliderVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -167,19 +106,23 @@ namespace MusicApplication
 
         private void homeBTN_Click(object sender, RoutedEventArgs e)
         {
+            nameLibrarySelected.Text = "Bài hát của bạn";
             new home(this);
         }
 
         private void playlistBTN_Click(object sender, RoutedEventArgs e)
         {
-            if(playlistPandel.Width.Value == 0)
-            {
-                playlistPandel.Width = new GridLength(300);
-            }
-            else
-            {
-                playlistPandel.Width = new GridLength(0);
-            }
+            new playlist(this);
+        }
+
+        private void forwardBTN_Click(object sender, RoutedEventArgs e)
+        {
+            mediaPlayer.controls.next();
+        }
+
+        private void backwardBTN_Click(object sender, RoutedEventArgs e)
+        {
+            mediaPlayer.controls.previous();
         }
     }
 }

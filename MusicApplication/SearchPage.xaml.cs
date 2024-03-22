@@ -1,4 +1,5 @@
-﻿using MusicApplication.Models;
+﻿using MusicApplication.Functions;
+using MusicApplication.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,8 +23,8 @@ namespace MusicApplication
     /// </summary>
     public partial class SearchPage : Page
     {
-        Window main { get; set; }
-        public SearchPage(Window main)
+        MainWindow main { get; set; }
+        public SearchPage(MainWindow main)
         {
             InitializeComponent();
             this.main = main;
@@ -31,18 +32,12 @@ namespace MusicApplication
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //if(listSong.Items != null)
-            //{
-            //    listSong.Items.Clear();
-            //}
-
+            listSong.Items.Clear();
             string search = searchTB.Text;
-            //if (search == "")
-            //{
-            //    listSong.Items.Clear();
-            //}
-
-
+            if(search == "")
+            {
+                return;
+            }
             string[] word = search.Split(' ');
 
             search = "";
@@ -57,21 +52,23 @@ namespace MusicApplication
 
             search = search.Trim();
 
-            //Debug.Write(word);
-            //var search1 = from Song song in mainView.Songs
-            //              where song.Name.ToLower().Contains(search.ToLower())
-            //              select song;
+            var result = from Song song in main.allSong
+                          where song.nameSong.ToLower().Contains(search.ToLower())
+                          select song;
 
-            //int count = 1;
-            //foreach (Song song in search1)
-            //{
-            //    SongItem songItem = song.toSongItem();
-            //    songItem.Count = count;
-            //    songItem.Width = searchListSong.Width - 30;
-            //    searchListSong.Controls.Add(songItem);
-            //    songItem.Click += new EventHandler(playSongIcon_Click);
-            //    count++;
-            //}
+            List<Song> listResult = result.ToList<Song>(); 
+            for (int i = 0;i< listResult.Count();i++)
+            {
+                listResult[i].Index = i+1;
+                this.listSong.Items.Add(listResult[i]);
+            }
+            
+
+        }
+
+        private void playSongBTN_Click(object sender, RoutedEventArgs e)
+        {
+            new playNewSong(main,this.listSong, sender);
         }
     }
 }

@@ -52,7 +52,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition x:Name="playlistPandel" Width="0"/>
+                    <ColumnDefinition x:Name="playlistPanel" Width="300"/>
                 </Grid.ColumnDefinitions>
                 <!--LeftPanel-->
                 <Grid Grid.Column="0">
@@ -99,11 +99,11 @@
                             <ListBox x:Name="listLibrary" Grid.Row="1" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}" BorderBrush= "{x:Null}" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="listLibrary_SelectionChanged">
                                 <ListBox.Resources>
                                     <Style TargetType="{x:Type ListBoxItem}">
-
+                                       
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                                    <Border x:Name="border">
+                                                    <Border x:Name="border" CornerRadius="5">
                                                         <Grid Width="280">
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="60"/>
@@ -118,7 +118,7 @@
 
                                                     <ControlTemplate.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Background" TargetName="border" Value="White"/>
+                                                            <Setter Property="Background" TargetName="border" Value="#4c4c4c80"/>
                                                             <Setter Property="Cursor" Value="Hand"/>
                                                         </Trigger>
                                                         <Trigger Property="IsSelected" Value="True">
@@ -176,14 +176,8 @@
                                                         </Grid.ColumnDefinitions>
                                                         <Button x:Name="playSongBTN" Content="{Binding Index}" BorderBrush="{x:Null}" Foreground="White" Background="Transparent" Width="40" Height="40" Click="playSongBTN_Click" Cursor="Hand" FontSize="14" FontWeight="Bold">
                                                         </Button>
-                                                        <Image  Grid.Column="1" Width="40" Height="40" Margin="10">
-                                                            <Image.Source>
-                                                                <Binding Path="artwork" >
-                                                                    <Binding.TargetNullValue>
-                                                                        <ImageSource>/icon/music.png</ImageSource>
-                                                                    </Binding.TargetNullValue>
-                                                                </Binding>
-                                                            </Image.Source>
+                                                        <Image Source="{Binding artwork}" Grid.Column="1" Width="40" Height="40" Margin="10">
+                                                            
                                                         </Image>
                                                         <StackPanel Grid.Column="2" Margin="10,10,0,10">
                                                             <TextBlock Text="{Binding nameSong}"  Foreground="White" VerticalAlignment="Center" FontSize="20" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"/>
@@ -244,7 +238,7 @@
                         <Label Content="{Binding ElementName=isPlayingAuthor, Path=Content}" HorizontalAlignment="Left" Margin="94,83,0,0" VerticalAlignment="Top" FontSize="14" Foreground="White" FontWeight="Bold"/>
                         <Label Content="Tiếp theo" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold"/>
 
-                        <ListBox Margin="0,159.6,0,0" d:ItemsSource="{d:SampleData ItemCount=5}" Background="{x:Null}" BorderBrush="{x:Null}">
+                        <ListBox x:Name="listPlayList" Margin="0,159.6,0,0" d:ItemsSource="{d:SampleData ItemCount=5}" Background="{x:Null}" BorderBrush="{x:Null}">
                             <ListBox.Resources>
                                 <Style TargetType="{x:Type ListBoxItem}">
                                     <Setter Property="Template">
@@ -256,10 +250,10 @@
                                                             <ColumnDefinition Width="70"/>
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <Image Source="/icon/music.png" Grid.Column="0" Height="50" Width="50"/>
+                                                        <Image Source="{Binding artwork}" Grid.Column="0" Height="50" Width="50"/>
                                                         <StackPanel Grid.Column="1">
-                                                            <Label Content="Tên bài hát" FontSize="16" FontWeight="Bold" Foreground="White"/>
-                                                            <Label Content="Tác giả" FontSize="14" FontWeight="Bold" Foreground="White"/>
+                                                            <Label Content="{Binding nameSong}" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                            <Label Content="{Binding author}" FontSize="14" FontWeight="Bold" Foreground="White"/>
                                                         </StackPanel>
                                                     </Grid>
                                                 </Border>
@@ -288,20 +282,19 @@
                     <Button x:Name="shuffleBTN" Style="{DynamicResource disableHoverEffectButton}" BorderBrush="{x:Null}" Foreground="{x:Null}" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,200,75" Background="{x:Null}">
                         <Image Source="/icon/shuffle.png"/>
                     </Button>
-                    <Button x:Name="backwardBTN" Style="{DynamicResource disableHoverEffectButton}" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Margin="0,0,100,75" Background="{x:Null}">
+                    <Button x:Name="backwardBTN" Style="{DynamicResource disableHoverEffectButton}" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Margin="0,0,100,75" Background="{x:Null}" Click="backwardBTN_Click">
                         <Image Source="/icon/backward.png"/>
                     </Button>
                     <Button x:Name="playBTN" Style="{DynamicResource disableHoverEffectButton}" BorderBrush="{x:Null}" Foreground="{x:Null}" Width="50" Height="50" Margin="0,0,0,75" Background="{x:Null}" Click="playBTN_Click">
                         <Image Source="/icon/play.png"/>
                     </Button>
-                    <Button x:Name="forwardBTN" Style="{DynamicResource disableHoverEffectButton}" BorderBrush="{x:Null}" Foreground="{x:Null}" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="100,0,0,75" Background="{x:Null}">
+                    <Button x:Name="forwardBTN" Style="{DynamicResource disableHoverEffectButton}" BorderBrush="{x:Null}" Foreground="{x:Null}" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="100,0,0,75" Background="{x:Null}" Click="forwardBTN_Click">
                         <Image Source="/icon/forward.png"/>
                     </Button>
                     <Button x:Name="loopBTN" Style="{DynamicResource disableHoverEffectButton}" BorderBrush="{x:Null}" Foreground="{x:Null}" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="200,0,0,75" Background="{x:Null}" Click="loopBTN_Click">
                         <Image Source="/icon/loop.png"/>
                     </Button>
                     <Slider x:Name="sliderSong" HorizontalAlignment="Center" VerticalAlignment="Center" Width="700" Margin="0,50,0,0" Height="20" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" ValueChanged="sliderSong_ValueChanged"/>
-                    <MediaElement HorizontalAlignment="Left" Height="24" Margin="464,168,0,0" VerticalAlignment="Top" Width="100"/>
                     <!--
                     <ProgressBar HorizontalAlignment="Center" Height="5" VerticalAlignment="Center" Width="700" Foreground="#FF017816" Margin="0,50,0,0" Value="50" BorderBrush="{x:Null}" Background="{x:Null}"/>
                     -->

@@ -19,12 +19,14 @@ namespace MusicApplication.Functions
 
             if (dialog.ShowDialog() == true)
             {
-                if (main.pathLibrary.Exists(e => e.Equals(dialog.FolderName)))
+                if (main.pathLibrarys.Exists(e => e.Equals(dialog.FolderName)))
                 {
                     return;
                 }
-                main.pathLibrary.Add(dialog.FolderName);
+                main.pathLibrarys.Add(dialog.FolderName);
                 main.listLibrary.Items.Add(dialog.SafeFolderName);
+
+                main.allSong.AddRange(new loadSongs().loadFromPath(dialog.FolderName));
             }
         }
 

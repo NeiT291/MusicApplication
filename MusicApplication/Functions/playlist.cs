@@ -11,13 +11,13 @@ namespace MusicApplication.Functions
     {
         public playlist(MainWindow main)
         {
-            if (main.playlistPandel.Width.Value == 0)
+            if (main.playlistPanel.Width.Value == 0)
             {
-                main.playlistPandel.Width = new GridLength(300);
+                main.playlistPanel.Width = new GridLength(300);
             }
             else
             {
-                main.playlistPandel.Width = new GridLength(0);
+                main.playlistPanel.Width = new GridLength(0);
             }
         }
     }

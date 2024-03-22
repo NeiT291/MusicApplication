@@ -12,6 +12,17 @@ namespace MusicApplication.Functions
         {
             main.searchView.NavigationService.RemoveBackEntry();
             main.searchView.Content = null;
+            main.allSong = new loadSongs().loadAllSong(main.pathLibrarys);
+
+            main.listSong.ItemsSource = null;
+            main.listSong.Items.Clear();
+            
+            for(int i = 0; i < main.allSong.Count; i++)
+            {
+                main.allSong[i].Index = i + 1;
+                main.listSong.Items.Add(main.allSong[i]);
+            }
+           
         }
     }
 }
