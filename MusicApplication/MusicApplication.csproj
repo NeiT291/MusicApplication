@@ -1,0 +1,77 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="icon\backward.png" />
+    <None Remove="icon\bookmark.png" />
+    <None Remove="icon\clock.png" />
+    <None Remove="icon\download.png" />
+    <None Remove="icon\forward.png" />
+    <None Remove="icon\hight_volume.png" />
+    <None Remove="icon\home.png" />
+    <None Remove="icon\library.png" />
+    <None Remove="icon\loop.png" />
+    <None Remove="icon\loopEnable.png" />
+    <None Remove="icon\low_volume.png" />
+    <None Remove="icon\medium_volume.png" />
+    <None Remove="icon\music.png" />
+    <None Remove="icon\mute.png" />
+    <None Remove="icon\pause.png" />
+    <None Remove="icon\play.png" />
+    <None Remove="icon\playSong.png" />
+    <None Remove="icon\plus.png" />
+    <None Remove="icon\queue.png" />
+    <None Remove="icon\search.png" />
+    <None Remove="icon\shuffle.png" />
+    <None Remove="icon\x.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <COMReference Include="WMPLib">
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>6bf52a50-394a-11d3-b153-00c04f79faa6</Guid>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TagLibSharp" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon\backward.png" />
+    <Resource Include="icon\bookmark.png" />
+    <Resource Include="icon\clock.png" />
+    <Resource Include="icon\download.png" />
+    <Resource Include="icon\forward.png" />
+    <Resource Include="icon\hight_volume.png" />
+    <Resource Include="icon\home.png" />
+    <Resource Include="icon\library.png" />
+    <Resource Include="icon\loop.png" />
+    <Resource Include="icon\loopEnable.png" />
+    <Resource Include="icon\low_volume.png" />
+    <Resource Include="icon\medium_volume.png" />
+    <Resource Include="icon\music.png" />
+    <Resource Include="icon\mute.png" />
+    <Resource Include="icon\pause.png" />
+    <Resource Include="icon\play.png" />
+    <Resource Include="icon\playSong.png" />
+    <Resource Include="icon\plus.png" />
+    <Resource Include="icon\queue.png" />
+    <Resource Include="icon\search.png" />
+    <Resource Include="icon\shuffle.png" />
+    <Resource Include="icon\x.png" />
+  </ItemGroup>
+
+</Project>
