@@ -17,6 +17,7 @@ using System.Drawing;
 using WMPLib;
 using System.Resources;
 using System.Windows.Threading;
+using MusicApplication.Functions;
 
 namespace MusicApplication
 {
@@ -25,35 +26,26 @@ namespace MusicApplication
     /// </summary>
     public partial class MainWindow : Window
     {
+        public List<Song> allSong = new List<Song>();
         public List<string> pathLibrary = new List<string>();
-        WindowsMediaPlayer mediaPlayer = new WindowsMediaPlayer();
+        public WindowsMediaPlayer mediaPlayer = new WindowsMediaPlayer();
         System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+        
         int i = 0;
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private void addLibraryBTN_Click(object sender, RoutedEventArgs e)
         {
-            Song song = new Song();
-
-            var dialog = new OpenFolderDialog();
-            
-            if(dialog.ShowDialog() == true)
-            {
-                if (pathLibrary.Exists(e => e.Equals(dialog.FolderName)))
-                {
-                    return;
-                }
-                this.pathLibrary.Add(dialog.FolderName);
-                listLibrary.Items.Add(dialog.SafeFolderName);
-            }
+            new addLibrary(this);
         }
 
         private void searchBTN_Click(object sender, RoutedEventArgs e)
         {
-            
+            new search(this);
         }
 
         private void listLibrary_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -136,10 +128,7 @@ namespace MusicApplication
             Image loopImage = (Image)((Button)sender).Content;
             loopImage.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/loopEnable.png"));
         }
-        //private void dispatcherTimer_Tick(object sender, EventArgs e)
-        //{
-        //    sliderSong.Value = mediaPlayer.controls.currentPosition;
-        //}
+        
 
         private void sliderSong_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -163,6 +152,34 @@ namespace MusicApplication
             isPlayingAuthor.Content = song.author;
 
             mediaPlayer.settings.volume = 10;
+        }
+
+        private void sliderVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            new changeVolume(this);
+        }
+
+        private void volumeBTN_Click(object sender, RoutedEventArgs e)
+        {
+            new mute(this);
+            
+        }
+
+        private void homeBTN_Click(object sender, RoutedEventArgs e)
+        {
+            new home(this);
+        }
+
+        private void playlistBTN_Click(object sender, RoutedEventArgs e)
+        {
+            if(playlistPandel.Width.Value == 0)
+            {
+                playlistPandel.Width = new GridLength(300);
+            }
+            else
+            {
+                playlistPandel.Width = new GridLength(0);
+            }
         }
     }
 }

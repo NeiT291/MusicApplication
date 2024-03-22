@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace MusicApplication.Models
 {
-    class Song
+    public class Song
     {
         public int Index { get; set; }
         public BitmapImage artwork {  get; set; }

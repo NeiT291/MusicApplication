@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Height="900" Width="1600" WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <Style TargetType="{x:Type Image}">
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+        </Style>
         <!--Disable Effect Hover Button-->
         <Style x:Key="disableHoverEffectButton" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -45,11 +48,11 @@
                 <RowDefinition Height="200"/>
             </Grid.RowDefinitions>
             <!--Top-->
-            <Grid Grid.Row="0">
+            <Grid x:Name="mainGrid" Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition x:Name="playlistPandel" Width="0"/>
                 </Grid.ColumnDefinitions>
                 <!--LeftPanel-->
                 <Grid Grid.Column="0">
@@ -58,10 +61,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <!--TopLeft-->
-                    <Border Grid.Row="0" Background="#FF121212" CornerRadius="10" Margin="10">
+                    <Border Grid.Row="0" Background="#FF121212" CornerRadius="10" Margin="10,10,0,0">
                         <Grid>
 
-                            <Button x:Name="homeBTN" Style="{DynamicResource disableHoverEffectButton}" Margin="10,25,110,96" Background="{x:Null}" BorderBrush="{x:Null}" Cursor="Hand">
+                            <Button x:Name="homeBTN" Style="{DynamicResource disableHoverEffectButton}" Margin="10,25,110,96" Background="{x:Null}" BorderBrush="{x:Null}" Cursor="Hand" Click="homeBTN_Click">
                                 <StackPanel Orientation="Horizontal" Width="140">
                                     <Image Source="/icon/home.png" Width="30" Height="30"/>
                                     <TextBlock Style="{DynamicResource mouseUnderline}" Text="Home" Foreground="White" VerticalAlignment="Center" FontSize="20" Margin="10,0,0,0" FontWeight="Bold"/>
@@ -79,17 +82,17 @@
 
                     </Border>
                     <!--BottomLeft-->
-                    <Border Grid.Row="1" Background="#FF121212" CornerRadius="20" Margin="10">
+                    <Border Grid.Row="1" Background="#FF121212" CornerRadius="10" Margin="10,10,0,10">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="75"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0" Orientation="Horizontal" Cursor="Hand" >
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <Image Width="30" Height="30" Source="/icon/library.png" Margin="15,0,0,0"/>
-                                <TextBlock Text="Thư viện" Height="30" Foreground="White" FontSize="20" FontWeight="Bold" Margin="15,0,77,0"/>
+                                <TextBlock Text="Thư viện" Height="30" Foreground="White" FontSize="20" FontWeight="Bold" Margin="15,0,100,0"/>
                                 <Button x:Name="addLibraryBTN" Style="{DynamicResource disableHoverEffectButton}" Height="40" Cursor="Hand" BorderBrush="{x:Null}" Background="{x:Null}" Click="addLibraryBTN_Click">
-                                    <Image Source="/icon/plus.png" Width="30" Height="30"/>
+                                    <Image Source="/icon/plus.png" Width="20" Height="20.4"/>
                                 </Button>
                             </StackPanel>
 
@@ -138,6 +141,7 @@
                     </Border>
                 </Grid>
                 <!--Center-->
+                
                 <Border Grid.Column="1" CornerRadius="10" Margin="10">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -153,7 +157,7 @@
                         <!--TopCenter-->
                         <Grid Grid.Row="0">
                             <Image Margin="10,0,0,10" Height="100" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="100" Source="/icon/bookmark.png"/>
-                            <TextBlock x:Name="nameLibrarySelected" Margin="130,0,0,10" Foreground="White" FontSize="36" FontWeight="Bold" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="930" Text="Bài hát của bạn"/>
+                            <TextBlock x:Name="nameLibrarySelected" Margin="130,0,0,10" Foreground="White" FontSize="36" FontWeight="Bold" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Bài hát của bạn"/>
                         </Grid>
                         <ListBox x:Name="listSong" Grid.Row="1" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}" BorderBrush="{x:Null}" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="listSong_SelectionChanged">
                             <ListBox.Resources>
@@ -227,7 +231,45 @@
                             </ListBox.Resources>
                         </ListBox>
                     </Grid>
+                </Border>
+                <Border Grid.Column="1" CornerRadius="10">
+                    <Frame x:Name="searchView" Margin="10" NavigationUIVisibility="Hidden" Foreground="{x:Null}"/>
+                </Border>
+                <!--rightPanel-->
+                <Border Grid.Column="10" CornerRadius="5" Background="#FF121212" Margin="0,10,10,10" >
+                    <Grid >
+                        <Label Content="Đang phát" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                        <Image Source="{Binding ElementName=isPlayingSongArtwork, Path=Source}" Width="70" Height="70" Margin="18,46,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" OpacityMask="Black"/>
+                        <Label Content="{Binding ElementName=isPlayingSongName, Path=Content}" HorizontalAlignment="Left" Margin="94,49,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                        <Label Content="{Binding ElementName=isPlayingAuthor, Path=Content}" HorizontalAlignment="Left" Margin="94,83,0,0" VerticalAlignment="Top" FontSize="14" Foreground="White" FontWeight="Bold"/>
+                        <Label Content="Tiếp theo" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold"/>
 
+                        <ListBox Margin="0,159.6,0,0" d:ItemsSource="{d:SampleData ItemCount=5}" Background="{x:Null}" BorderBrush="{x:Null}">
+                            <ListBox.Resources>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                <Border CornerRadius="5" Margin="5">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="70"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image Source="/icon/music.png" Grid.Column="0" Height="50" Width="50"/>
+                                                        <StackPanel Grid.Column="1">
+                                                            <Label Content="Tên bài hát" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                            <Label Content="Tác giả" FontSize="14" FontWeight="Bold" Foreground="White"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.Resources>
+                        </ListBox>
+                    </Grid>
                 </Border>
             </Grid>
             <!--Media player-->
@@ -236,8 +278,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="700"/>
                     <ColumnDefinition Width="*"/>
-
-
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <Image x:Name="isPlayingSongArtwork" HorizontalAlignment="Left" Height="100" Margin="20,50,0,0" VerticalAlignment="Top" Width="100"/>
@@ -267,7 +307,16 @@
                     -->
 
                 </Grid>
+                <Grid Grid.Column="2">
+                    <Button x:Name="playlistBTN" Style="{DynamicResource disableHoverEffectButton}" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20,50,190,0" Background="{x:Null}" BorderBrush="{x:Null}" Click="playlistBTN_Click">
+                        <Image x:Name="playlistBTN_Icon" Source="/icon/queue.png"/>
+                    </Button>
+                    <Button x:Name="volumeBTN" Style="{DynamicResource disableHoverEffectButton}" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="100,50,150,0" Background="{x:Null}" BorderBrush="{x:Null}" Click="volumeBTN_Click">
+                        <Image x:Name="volumeBTN_Icon" Source="/icon/medium_volume.png"/>
+                    </Button>
+                    <Slider x:Name="sliderVolume" Width="120" Height="18" VerticalAlignment="Top" Margin="0,116,20,0" ValueChanged="sliderVolume_ValueChanged" Maximum="100" HorizontalAlignment="Right"/>
 
+                </Grid>
             </Grid>
 
         </Grid>
