@@ -68,7 +68,7 @@ namespace MusicApplication
 
         private void playSongBTN_Click(object sender, RoutedEventArgs e)
         {
-            new playNewSong(main,this.listSong, sender);
+            new playSongFromListSong(main,this.listSong, sender);
         }
     }
 }

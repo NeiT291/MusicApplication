@@ -12,7 +12,7 @@ namespace MusicApplication.Functions
     {
         public changeVolume(MainWindow main)
         {
-            main.mediaPlayer.settings.volume = Convert.ToInt32(main.sliderVolume.Value);
+            main.mediaElement.Volume = main.sliderVolume.Value * 0.01;
             if (main.sliderVolume.Value < 30)
             {
                 main.volumeBTN_Icon.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/low_volume.png"));

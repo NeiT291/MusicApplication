@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Runtime.CompilerServices;
 
 namespace MusicApplication.Functions
 {
@@ -14,15 +15,15 @@ namespace MusicApplication.Functions
         public loop(MainWindow main, object sender)
         {
             Image loopImage = (Image)((Button)sender).Content;
-            if (main.mediaPlayer.settings.getMode("loop"))
+            if (main.isLoop)
             {
                 loopImage.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/loop.png"));
-                main.mediaPlayer.settings.setMode("loop", false);
+                main.isLoop = false;
             }
             else
             {
                 loopImage.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/loopEnable.png"));
-                main.mediaPlayer.settings.setMode("loop", true);
+                main.isLoop = true;
             }
         }
     }

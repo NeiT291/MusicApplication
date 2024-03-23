@@ -7,14 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
-using WMPLib;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace MusicApplication.Functions
 {
     class loadSongs
     {
-        WindowsMediaPlayer mediaPlayer = new WindowsMediaPlayer();
-        
         public List<Song> loadFromPath(string path)
         {
             List<Song> songs = new List<Song>();
@@ -25,10 +24,8 @@ namespace MusicApplication.Functions
 
                 song.Index = i + 1;
 
-                IWMPMedia media = mediaPlayer.newMedia(files[i]);
-
                 TagLib.File tagFile = TagLib.File.Create(files[i]);
-
+                
                 var firstPicture = tagFile.Tag.Pictures.FirstOrDefault();
 
                 if (firstPicture != null)
@@ -56,8 +53,10 @@ namespace MusicApplication.Functions
                 song.author = tagFile.Tag.Performers.FirstOrDefault();
                 song.album = tagFile.Tag.Album;
                 song.path = files[i];
-                song.duration = media.duration;
-                song.durationString = media.durationString;
+                song.duration = Math.Truncate(tagFile.Properties.Duration.TotalSeconds);
+                
+                song.durationString = tagFile.Properties.Duration.ToString(@"mm\:ss");
+
                 songs.Add(song);
             }
             return songs;
@@ -70,6 +69,11 @@ namespace MusicApplication.Functions
                 allSong.AddRange(loadFromPath(paths[i]));
             }
             return allSong;
+        }
+        public void test(object sender, RoutedEventArgs e)
+        {
+            MediaElement mediaElement = (MediaElement)sender;
+            MessageBox.Show(mediaElement.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
         }
     }
 }

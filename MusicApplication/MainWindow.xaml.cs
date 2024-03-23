@@ -14,7 +14,6 @@ using System.Windows.Shapes;
 using TagLib;
 using Path = System.IO.Path;
 using System.Drawing;
-using WMPLib;
 using System.Resources;
 using System.Windows.Threading;
 using MusicApplication.Functions;
@@ -29,14 +28,24 @@ namespace MusicApplication
         public List<Song> allSong = new List<Song>();
         public List<Song> playlist = new List<Song>();
         public List<string> pathLibrarys = new List<string>();
-        public WindowsMediaPlayer mediaPlayer = new WindowsMediaPlayer();
-        //System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+        public int playlistIndex = -1;
+        public bool isPlaying = false;
+        public bool isLoop = false;
+        public DispatcherTimer timer = new DispatcherTimer();
         
-        int i = 0;
+        
+        
         public MainWindow()
         {
             InitializeComponent();
-            
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object? sender, EventArgs e)
+        {
+            sliderSong.Value = mediaElement.Position.TotalSeconds;
+            songPosition.Content = mediaElement.Position.ToString(@"mm\:ss");
         }
 
         private void addLibraryBTN_Click(object sender, RoutedEventArgs e)
@@ -59,21 +68,12 @@ namespace MusicApplication
 
         private void listSong_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(listSong.SelectedItem == null) 
-            {
-                return;
-            }
-            Song song = (Song)listSong.SelectedItem;
-            playlist.Add(song);
-            
-            mediaPlayer.currentPlaylist.appendItem(mediaPlayer.newMedia(song.path));
-
-            listPlayList.Items.Add(song);
+            new addSongToPlaylist(this);
         }
 
         private void playBTN_Click(object sender, RoutedEventArgs e)
         {
-            new play(this, sender);
+            new playAndPause(this);
         }
 
         private void loopBTN_Click(object sender, RoutedEventArgs e)
@@ -81,16 +81,10 @@ namespace MusicApplication
 
             new loop(this, sender);
         }
-        
-
-        private void sliderSong_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            mediaPlayer.controls.currentPosition = sliderSong.Value;
-        }
 
         private void playSongBTN_Click(object sender, RoutedEventArgs e)
         {
-            new playNewSong(this,this.listSong, sender);
+            new playSongFromListSong(this,this.listSong, sender);
         }
 
         private void sliderVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -117,12 +111,35 @@ namespace MusicApplication
 
         private void forwardBTN_Click(object sender, RoutedEventArgs e)
         {
-            mediaPlayer.controls.next();
+            new forward(this);
         }
 
         private void backwardBTN_Click(object sender, RoutedEventArgs e)
         {
-            mediaPlayer.controls.previous();
+           new backward(this);
+        }
+
+        private void MediaElement_MediaOpened(object sender, RoutedEventArgs e)
+        {
+            songDuration.Content = mediaElement.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+        }
+
+        private void sliderSong_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            mediaElement.Position = new TimeSpan(0, 0, 0, (int)sliderSong.Value);
+        }
+
+        private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            if (isLoop)
+            {
+                mediaElement.Position = TimeSpan.Zero;
+                mediaElement.Play();
+            }
+            else
+            {
+                new forward(this);
+            }
         }
     }
 }

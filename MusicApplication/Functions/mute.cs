@@ -12,14 +12,14 @@ namespace MusicApplication.Functions
     {
         public mute(MainWindow main)
         {
-            if (main.mediaPlayer.settings.mute)
+            if (main.mediaElement.IsMuted)
             {
-                main.mediaPlayer.settings.mute = false;
+                main.mediaElement.IsMuted = false;
                 main.volumeBTN_Icon.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/medium_volume.png"));
             }
             else
             {
-                main.mediaPlayer.settings.mute = true;
+                main.mediaElement.IsMuted = true;
                 main.volumeBTN_Icon.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/mute.png"));
             }
         }
