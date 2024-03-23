@@ -31,6 +31,8 @@ namespace MusicApplication
         public int playlistIndex = -1;
         public bool isPlaying = false;
         public bool isLoop = false;
+        public bool isShuffle = false;
+
         public DispatcherTimer timer = new DispatcherTimer();
         
         
@@ -135,11 +137,20 @@ namespace MusicApplication
             {
                 mediaElement.Position = TimeSpan.Zero;
                 mediaElement.Play();
-            }
-            else
+            }else if (isShuffle)
             {
+                Random random = new Random();
+                new playSong(this, allSong[random.Next(0, allSong.Count)]);
+            }else
+            {
+                playBTNImage.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/play.png"));
                 new forward(this);
             }
+        }
+
+        private void shuffleBTN_Click(object sender, RoutedEventArgs e)
+        {
+            new shuffle(this);
         }
     }
 }

@@ -279,8 +279,8 @@
                     <Label x:Name="isPlayingAuthor" Content="" Margin="130,100,30,0" VerticalAlignment="Top" FontSize="16" Foreground="White"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <Button x:Name="shuffleBTN" Style="{DynamicResource disableHoverEffectButton}" BorderBrush="{x:Null}" Foreground="{x:Null}" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,200,75" Background="{x:Null}">
-                        <Image Source="/icon/shuffle.png"/>
+                    <Button x:Name="shuffleBTN" Style="{DynamicResource disableHoverEffectButton}" BorderBrush="{x:Null}" Foreground="{x:Null}" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,200,75" Background="{x:Null}" Click="shuffleBTN_Click">
+                        <Image x:Name="shuffleBTNImage" Source="/icon/shuffle.png"/>
                     </Button>
                     <Button x:Name="backwardBTN" Style="{DynamicResource disableHoverEffectButton}" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Margin="0,0,100,75" Background="{x:Null}" Click="backwardBTN_Click">
                         <Image Source="/icon/backward.png"/>

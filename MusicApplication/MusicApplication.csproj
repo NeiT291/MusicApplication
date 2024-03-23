@@ -30,6 +30,7 @@
     <None Remove="icon\queue.png" />
     <None Remove="icon\search.png" />
     <None Remove="icon\shuffle.png" />
+    <None Remove="icon\shuffleEnable.png" />
     <None Remove="icon\x.png" />
   </ItemGroup>
 
@@ -59,6 +60,7 @@
     <Resource Include="icon\queue.png" />
     <Resource Include="icon\search.png" />
     <Resource Include="icon\shuffle.png" />
+    <Resource Include="icon\shuffleEnable.png" />
     <Resource Include="icon\x.png" />
   </ItemGroup>
 
