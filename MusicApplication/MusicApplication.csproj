@@ -22,6 +22,7 @@
     <None Remove="icon\low_volume.png" />
     <None Remove="icon\medium_volume.png" />
     <None Remove="icon\music.png" />
+    <None Remove="icon\musicAppIcon.ico" />
     <None Remove="icon\mute.png" />
     <None Remove="icon\pause.png" />
     <None Remove="icon\play.png" />
@@ -52,6 +53,7 @@
     <Resource Include="icon\low_volume.png" />
     <Resource Include="icon\medium_volume.png" />
     <Resource Include="icon\music.png" />
+    <Resource Include="icon\musicAppIcon.ico" />
     <Resource Include="icon\mute.png" />
     <Resource Include="icon\pause.png" />
     <Resource Include="icon\play.png" />

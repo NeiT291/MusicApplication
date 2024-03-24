@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicApplication"
         mc:Ignorable="d"
-        Height="900" Width="1600" WindowStartupLocation="CenterScreen">
+        Height="900" Width="1600" WindowStartupLocation="CenterScreen" Icon="/icon/musicAppIcon.ico">
     <Window.Resources>
         <Style TargetType="{x:Type Image}">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />

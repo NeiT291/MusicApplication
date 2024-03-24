@@ -10,6 +10,7 @@ namespace MusicApplication.Functions
     {
         public home(MainWindow main)
         {
+            main.nameLibrarySelected.Text = "Bài hát của bạn";
             main.searchView.NavigationService.RemoveBackEntry();
             main.searchView.Content = null;
             main.allSong = new loadSongs().loadAllSong(main.pathLibrarys);

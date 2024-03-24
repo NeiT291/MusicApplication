@@ -102,7 +102,6 @@ namespace MusicApplication
 
         private void homeBTN_Click(object sender, RoutedEventArgs e)
         {
-            nameLibrarySelected.Text = "Bài hát của bạn";
             new home(this);
         }
 
@@ -133,19 +132,7 @@ namespace MusicApplication
 
         private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
-            if (isLoop)
-            {
-                mediaElement.Position = TimeSpan.Zero;
-                mediaElement.Play();
-            }else if (isShuffle)
-            {
-                Random random = new Random();
-                new playSong(this, allSong[random.Next(0, allSong.Count)]);
-            }else
-            {
-                playBTNImage.Source = new BitmapImage(new System.Uri("pack://application:,,,/icon/play.png"));
-                new forward(this);
-            }
+            new mediaEnded(this);
         }
 
         private void shuffleBTN_Click(object sender, RoutedEventArgs e)
