@@ -70,10 +70,5 @@ namespace MusicApplication.Functions
             }
             return allSong;
         }
-        public void test(object sender, RoutedEventArgs e)
-        {
-            MediaElement mediaElement = (MediaElement)sender;
-            MessageBox.Show(mediaElement.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
-        }
     }
 }
