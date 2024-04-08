@@ -108,11 +108,12 @@
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="60"/>
                                                                 <ColumnDefinition Width="*"/>
-
+                                                                <ColumnDefinition Width="60"/>
                                                             </Grid.ColumnDefinitions>
                                                             <Image Grid.Column="0" Source="/icon/bookmark.png" Width="40" Height="40" Margin="10"/>
 
-                                                            <TextBlock Grid.Column="1" Text="{Binding}"  Foreground="White" VerticalAlignment="Center" FontSize="20"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding}" Foreground="White" VerticalAlignment="Center" FontSize="20"/>
+                                                            <Button Grid.Column="2" Content="x" Style="{DynamicResource disableHoverEffectButton}" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}" Click="deleteLibrary"/>
                                                         </Grid>
                                                     </Border>
 
